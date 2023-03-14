@@ -6,6 +6,7 @@ const Main = () => (
     <>
         <BarraNavegacao />
         <main>
+            <link rel="stylesheet" href="https://unpkg.com/primeflex@^3/primeflex.css"></link>
             <Outlet />
         </main>
     </>

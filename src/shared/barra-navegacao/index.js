@@ -20,7 +20,11 @@ const BarraNavegacao = () => {
 
     return (
         <>
-            <TabMenu model={listaMenu} activeIndex={activeIndex} onTabChange={(e) => atualizarIndex(e) } />
+            <div class="grid">
+                <div class="col-6 col-offset-3">
+                    <TabMenu model={listaMenu} activeIndex={activeIndex} onTabChange={(e) => atualizarIndex(e) } />
+                </div>
+            </div>
         </>
     )
 }
