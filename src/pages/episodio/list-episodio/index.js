@@ -9,18 +9,18 @@ import { Button } from 'primereact/button';
 import http from "../../../utils/http";
 
 const ListEpisodio = () => {
-    const [episodioList, setEpisodioList] = useState([]);
+    document.title = 'Listagem de episódios';
+    const navegate = useNavigate();
+    const getAllEpisodiosURL = `episode?page=`;
+    const [listaEpisodios, setListaEpisodios] = useState([]);
     const [totalRegistros, setTotalRegistros] = useState(0);
     const [quantidadeDeLinhas, setQuantidadeDeLinhas] = useState(0);
     const [numeroPaginaValor, setNumeroPaginaValor] = useState(0);
-    const navegate = useNavigate();
-
-    const getAllEpisodios = `episode?page=`;
 
     useEffect(() => {
         const getEpisodios = async () => {
-            const response = await http.get(`${getAllEpisodios}/0`);
-            setEpisodioList(response?.data?.results);
+            const response = await http.get(`${getAllEpisodiosURL}/0`);
+            setListaEpisodios(response?.data?.results);
             setTotalRegistros(response?.data?.info?.count);
             setQuantidadeDeLinhas(response?.data?.results.length);
         }
@@ -31,8 +31,8 @@ const ListEpisodio = () => {
     const proximaPagina = async (e) => {
         let numeroPagina = (e.page + 1);
 
-        const response = await http.get(`${getAllEpisodios}${numeroPagina}`);
-        setEpisodioList(response?.data?.results);
+        const response = await http.get(`${getAllEpisodiosURL}${numeroPagina}`);
+        setListaEpisodios(response?.data?.results);
         setTotalRegistros(response?.data?.info?.count);
         setNumeroPaginaValor(e.first);
     }    
@@ -49,10 +49,10 @@ const ListEpisodio = () => {
         <>
             <div className="grid">
                 <div className="col-6 col-offset-3">
-                    <DataTable value={episodioList} tableStyle={{ minWidth: '50rem' }}>
+                    <DataTable value={listaEpisodios} tableStyle={{ minWidth: '50rem' }}>
                         <Column field="name" header="Nome do Episódio"></Column>
                         <Column field="air_date" header="Data de estreia"></Column>
-                        <Column header="Ação" body={gerarLink(episodioList)}></Column>
+                        <Column header="Ação" body={gerarLink(listaEpisodios)}></Column>
                     </DataTable>
                     <Paginator first={numeroPaginaValor} rows={quantidadeDeLinhas} totalRecords={totalRegistros} onPageChange={proximaPagina} />
                 </div>

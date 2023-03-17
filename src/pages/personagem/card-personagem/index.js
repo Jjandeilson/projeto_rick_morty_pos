@@ -9,32 +9,38 @@ import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
 
 const CardPersonagem = () => {
-    const [personagem, setPersonagem] = useState({});
-    const [listaEpisodio, setListaEpisodio] = useState([])
     const navegate = useNavigate();
-    const {id} = useParams();
     const getPersonagemURL = "/character";
+    const getAllEpisodiosURL = "/episode";
+    const {id} = useParams();
+    const [personagem, setPersonagem] = useState({});
+    const [listaEpisodios, setListaEpisodios] = useState([])
     
     useEffect(() => {
         const getPersonagem = async () => {
             await http.get(`${getPersonagemURL}/${id}`)
             .then(response => {
                 setPersonagem(response.data)
+                alterarNomePagina(response.data.name)
                 carregaEpisodios(response.data.episode)
-                    .then(resp => {
-                        setListaEpisodio(resp.data)
+                .then(resp => {
+                    setListaEpisodios(resp.data)
                 })
             })
         }
-            
+        
         getPersonagem();
-    }, [])    
+    }, []) 
+    
+    const alterarNomePagina = (nomePersonagem) => {
+        document.title = `Personagem: ${nomePersonagem}`;
+    }
 
     const carregaEpisodios = async (nomeEpisodios) => {
-        let listaEp = nomeEpisodios.reduce((acc, valor) => {
+        let listaEpisodioss = nomeEpisodios.reduce((acc, valor) => {
           return acc += valor.substr(valor.lastIndexOf('/')).replace('/', ',')
         }, '')
-       return await http.get(`/episode/${listaEp}`)
+       return await http.get(`${getAllEpisodiosURL}/${listaEpisodioss}`)
     } 
     
     const directEpisodio = (e) => {
@@ -63,8 +69,8 @@ const CardPersonagem = () => {
                     </div>
                 </div>
             <div className="col-6 col-offset-3">
-                <DataTable value={listaEpisodio}>
-                    <Column header="Episódio" body={carregarCampo(listaEpisodio)}></Column>
+                <DataTable value={listaEpisodios}>
+                    <Column header="Episódio" body={carregarCampo(listaEpisodios)}></Column>
                 </DataTable>                
             </div>
         </div>

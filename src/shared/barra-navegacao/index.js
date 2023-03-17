@@ -1,6 +1,7 @@
-import { TabMenu } from 'primereact/tabmenu';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+
+import { TabMenu } from 'primereact/tabmenu';
 
 const listaMenu = [
     {label: 'Home', icon: 'pi pi-home', link: '/'},
@@ -12,10 +13,17 @@ const listaMenu = [
 const BarraNavegacao = () => {
     const [activeIndex, setActiveIndex] = useState(0);
     const navegacao = useNavigate();
+
+    const nomePagina = (event) => {
+        if (event?.value.link === '/') {
+            document.title = 'Home'
+        }
+    }
     
-    const atualizarIndex = (e) => {
-        setActiveIndex(e.index);
-        navegacao(e?.value.link)
+    const atualizarIndex = (event) => {
+        setActiveIndex(event.index);
+        nomePagina(event);        
+        navegacao(event?.value.link)
     }
 
     return (

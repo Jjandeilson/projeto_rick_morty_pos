@@ -8,11 +8,13 @@ import ListEpisodio from './pages/episodio/list-episodio';
 import CardEpisodio from './pages/episodio/card-episodio';
 import ListLocalizacao from './pages/localizacao/list-localizacao';
 import CardLocalizacao from './pages/localizacao/card-localizacao';
+import Home from './pages/home';
 
 function App() {
   return (
    <Routes>
       <Route path="/" element={<Main />}>
+        <Route index element={<Home />} />
         <Route path="personagens">
           <Route path="" element={<ListaPersonagem />} />
           <Route path=":id" element={<CardPersonagem />} />
